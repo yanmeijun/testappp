@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	*{margin: 0;padding: 0}
+	#box{width: 700px;margin: 20px auto;border:1px solid;}
+	h2{height: 35px;line-height: 35px;text-align: center;color: blue;background: #0ff}
+ 	span a{width: 30px;height: 30px;float: left;border-radius: 15px;margin: 10px 10px;text-align: center;line-height: 30px;text-decoration: none}
+ 	button{margin: 0 70px}
+ 	.bg{background: red}
+ 	.bl{background: blue}
+ 	p{font-size: 24px;height: 40px;line-height: 40px;color: blue;font-weight: 600}
+ 	.p1 span a{width: 30px;height: 30px;float: left;border-radius: 15px;margin: 10px 10px;text-align: center;line-height: 30px;text-decoration: none}
+	</style>
+	<script src='jquery1.7.js'></script>
+</head>
+<body>
+	<div id='box'>
+		<h2>双色球</h2>
+		<h1>红球</h1>
+			<div id='top'>
+				
+			</div>
+		<div style="clear:both"></div>
+		<h1>篮球</h1>
+			<div id='bot'>
+				
+			</div>
+		<div style="clear:both"></div>
+		<button id='bt'>清空</button>
+		<button id='btn'>随机</button>
+		<button id='btnn'>暂停</button>
+		<p>双色球的号数</p><p class='p1'></p>
+	</div>
+	<script>
+
+
+
+	$(function(){
+		var timer=null
+		
+		function auto(){
+			arr1=[],arr2=[];
+			for(var i=1;i<=33;i++){
+				if(i<=16){
+					arr2.push(i)
+				}
+				arr1.push(i)
+			}
+			console.log(arr1)
+			console.log(arr2)
+
+
+			var str='',str1='';
+			$.each(arr1,function(i,val){
+				var rand=val<10?"0"+val:val;
+				str+='<span><a href="">'+rand+'</a></span>'
+			})
+			$('#top').html(str)
+			$.each(arr2,function(i,val){
+				var randd=val<10?"0"+val:val;
+				str1+='<span><a href="">'+randd+'</a></span>'
+			})
+				$('#bot').html(str1)
+
+		}
+		auto()
+
+
+		
+		function ran(){
+			temp=[],temp1=[];
+			$('#top a').removeClass('bg')
+			$('#bot a').removeClass('bl')
+			for(var i=0;temp.length<6;i++){
+				var num=Math.floor(Math.random()*33)
+				//console.log(num)
+				if($.inArray(num,temp)==-1){
+					temp.push(num)
+					$('#top a').eq(num-1).addClass('bg')
+				}
+			}
+			console.log(temp)
+			var num1=Math.floor(Math.random()*16)
+			temp1.push(num1)
+			console.log(temp1)
+			$('#bot a').eq(num1-1).addClass('bl')
+			
+		}
+		
+		//点击清空时
+		$('#bt').on('click',function(){
+			temp=[],temp1=[]
+			$('#top a').removeClass('bg')
+			$('#bot a').removeClass('bl')
+			$('.p1').html(' ')
+		})
+		//点击随机调用定时器
+		$('#btn').on('click',function(){
+			$('#btn').prop('disabled',true)
+			timer=setInterval(function(){
+				ran()
+			},100)
+			$('#btnn').prop('disabled',false)
+		})
+		
+		$('#btnn').on('click',function(){
+			$('.p1').html(' ')
+			var s=''
+			clearInterval(timer)
+			$('#btn').prop('disabled',false)
+			
+			$('.bg').each(function(){
+				s+='<span><a href="">'+$(this).text()+'</a></span>'
+			})
+			$('.bl').each(function(){
+				s+='<span><a href="">'+$(this).text()+'</a></span>'
+			})
+
+			$('.p1').html(s)
+			$('.p1 a').eq(-1).addClass('bl')
+			$('.p1 a').addClass('bg')
+			$('#btnn').prop('disabled',true)
+			
+		})
+		
+		
+	})
+
+
+
+	</script>
+</body>
+</html>
